@@ -18,15 +18,15 @@ public class MuscleAlarmApplication {
 		SpringApplication.run(MuscleAlarmApplication.class, args);
 	}
 
-	@EventMapping
-	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-		System.out.println("event: " + event);
-		return new TextMessage("筋肉ついてますか？");
-	}
-
-	@EventMapping
-	public void handleDefaultMessageEvent(Event event) {
-		System.out.println("event: " + event);
-	}
+//	@EventMapping
+//	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+//		System.out.println("event: " + event);
+//		return new TextMessage("筋肉ついてますか？");
+//	}
+//
+//	@EventMapping
+//	public void handleDefaultMessageEvent(Event event) {
+//		System.out.println("event: " + event);
+//	}
 
 }
