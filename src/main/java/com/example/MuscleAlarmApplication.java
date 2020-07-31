@@ -21,7 +21,7 @@ public class MuscleAlarmApplication {
 	@EventMapping
 	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
 		System.out.println("event: " + event);
-		return new TextMessage(event.getMessage().getText());
+		return new TextMessage("筋肉ついてますか？");
 	}
 
 	@EventMapping
