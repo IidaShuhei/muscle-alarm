@@ -3,10 +3,12 @@ package com.example;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -18,15 +20,20 @@ public class MuscleAlarmApplication {
 		SpringApplication.run(MuscleAlarmApplication.class, args);
 	}
 
-//	@EventMapping
-//	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-//		System.out.println("event: " + event);
-//		return new TextMessage("筋肉ついてますか？");
-//	}
-//
-//	@EventMapping
-//	public void handleDefaultMessageEvent(Event event) {
-//		System.out.println("event: " + event);
-//	}
+	@EventMapping
+	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+		System.out.println("event: " + event);
+		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+                "筋トレしたかい?",
+                new MessageAction("やったね", "＼(^_^)／"),
+                new MessageAction("まだ…", ";つД｀)")
+        );
+		return new TextMessage(event.getMessage().getText());
+	}
+
+	@EventMapping
+	public void handleDefaultMessageEvent(Event event) {
+		System.out.println("event: " + event);
+	}
 
 }
