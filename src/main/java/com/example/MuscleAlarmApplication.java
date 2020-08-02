@@ -1,14 +1,16 @@
 package com.example;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.dto.Dto;
-import com.example.form.Form;
-import com.linecorp.bot.model.event.Event;
-import com.linecorp.bot.model.event.JoinEvent;
+import com.example.dto.Station;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -27,18 +29,13 @@ public class MuscleAlarmApplication {
 	}
 
 	@EventMapping
-	public Dto handleTextMessageEvent(Form form) {
-		return (Dto) restTemplate.getForObject(getUrl + form.getStation(), Dto.class).getRest();
-	}
-
-	@EventMapping
-	public void handleDefaultMessageEvent(Event event) {
-		System.out.println("event: " + event);
-	}
-	
-	@EventMapping
-	public TextMessage joinMessageEvent(JoinEvent event) {
-		return new TextMessage(event.getReplyToken());
+	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+		List<Station> dtoList = restTemplate.getForObject(getUrl + event.getMessage().getText(), Dto.class).getRest();
+		String str = "";
+		for(Station station : dtoList) {
+			str += station.getName();
+		}
+		return new TextMessage(str);
 	}
 
 }
