@@ -19,31 +19,38 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 @SpringBootApplication
 @LineMessageHandler
 public class MuscleAlarmApplication {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(MuscleAlarmApplication.class, args);
 	}
-	
+
 	@Bean
 	public RestTemplate restTemplate() {
-	    return new RestTemplate();
+		return new RestTemplate();
 	}
-	
+
 	String lineSepa = System.getProperty("line.separator");
-	
+
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	private static final String getUrl = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=4044f5ab8816f1d84ae60d4aed15bf4b&category_s=RSFST08008&freeword=";
 
 	@EventMapping
 	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-		List<Name> dtoList = restTemplate.getForObject(getUrl + event.getMessage().getText(), Dto.class).getRest();
-		String str = "";
-		for(Name name : dtoList) {
-			str = str + lineSepa + name.getName() + lineSepa + name.getUrl() + lineSepa;
+
+		try {
+
+			List<Name> dtoList = restTemplate.getForObject(getUrl + event.getMessage().getText(), Dto.class).getRest();
+			String str = "";
+			for (Name name : dtoList) {
+				str = str + lineSepa + name.getName() + lineSepa + name.getUrl() + lineSepa;
+			}
+			return new TextMessage(str);
+
+		} catch (Exception e) {
+			return new TextMessage("駅名を入力しいや！！");
 		}
-		return new TextMessage(str);
 	}
 
 }
