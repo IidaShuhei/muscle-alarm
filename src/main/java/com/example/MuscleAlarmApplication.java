@@ -40,8 +40,9 @@ public class MuscleAlarmApplication {
 	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
 		List<Name> dtoList = restTemplate.getForObject(getUrl + event.getMessage().getText(), Dto.class).getRest();
 		String str = "";
-		for(Name station : dtoList) {
-			str = str + lineSepa + station.getName();
+		String str = "";
+		for(Name name : dtoList) {
+			str = str + lineSepa + name.getName() + lineSepa + name.getUrl() + lineSepa;
 		}
 		return new TextMessage(str);
 	}

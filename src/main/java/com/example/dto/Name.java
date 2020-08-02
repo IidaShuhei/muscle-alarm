@@ -6,5 +6,6 @@ import lombok.Data;
 public class Name {
 
 	private String name;
+	private String url;
 	
 }
