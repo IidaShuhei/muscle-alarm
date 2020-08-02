@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.JoinEvent;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
@@ -34,6 +35,11 @@ public class MuscleAlarmApplication {
 	@EventMapping
 	public void handleDefaultMessageEvent(Event event) {
 		System.out.println("event: " + event);
+	}
+	
+	@EventMapping
+	public TextMessage joinMessageEvent(JoinEvent event) {
+		return new TextMessage(event.getReplyToken());
 	}
 
 }
