@@ -1,35 +1,33 @@
 package com.example;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.client.RestTemplate;
 
-import com.linecorp.bot.model.action.MessageAction;
+import com.example.dto.Dto;
+import com.example.form.Form;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.JoinEvent;
-import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 @SpringBootApplication
 @LineMessageHandler
 public class MuscleAlarmApplication {
+	
+	@Autowired
+	RestTemplate restTemplate;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MuscleAlarmApplication.class, args);
 	}
 
 	@EventMapping
-	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-		System.out.println("event: " + event);
-		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                "筋トレしたかい?",
-                new MessageAction("やったね", "＼(^_^)／"),
-                new MessageAction("まだ…", ";つД｀)")
-        );
-		return new TextMessage(event.getMessage().getText());
+	public Dto handleTextMessageEvent(Form form) {
+		String  url  = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=0fee8fd48d4f09b6d91da827ab0ddbd7&category_s=RSFST08011&freeword=" + form.getStation();
+		return restTemplate.getForObject(url, Dto.class, form.getStation());
 	}
 
 	@EventMapping
