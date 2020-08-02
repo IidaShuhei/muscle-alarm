@@ -19,6 +19,8 @@ public class MuscleAlarmApplication {
 	
 	@Autowired
 	RestTemplate restTemplate;
+	
+	private static final String getUrl = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=4044f5ab8816f1d84ae60d4aed15bf4b&category_s=RSFST08008&freeword=";
 
 	public static void main(String[] args) {
 		SpringApplication.run(MuscleAlarmApplication.class, args);
@@ -26,8 +28,7 @@ public class MuscleAlarmApplication {
 
 	@EventMapping
 	public Dto handleTextMessageEvent(Form form) {
-		String  url  = "https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=0fee8fd48d4f09b6d91da827ab0ddbd7&category_s=RSFST08011&freeword=" + form.getStation();
-		return restTemplate.getForObject(url, Dto.class, form.getStation());
+		return (Dto) restTemplate.getForObject(getUrl + form.getStation(), Dto.class).getRest();
 	}
 
 	@EventMapping
