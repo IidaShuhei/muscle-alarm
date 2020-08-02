@@ -10,6 +10,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Dto {
 
-	private List<Station> rest;
+	private List<Name> rest;
 	
 }
