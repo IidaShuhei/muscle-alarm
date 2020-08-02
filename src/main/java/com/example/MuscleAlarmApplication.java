@@ -29,6 +29,8 @@ public class MuscleAlarmApplication {
 	    return new RestTemplate();
 	}
 	
+	String lineSepa = System.getProperty("line.separator");
+	
 	@Autowired
 	RestTemplate restTemplate;
 	
@@ -39,7 +41,7 @@ public class MuscleAlarmApplication {
 		List<Name> dtoList = restTemplate.getForObject(getUrl + event.getMessage().getText(), Dto.class).getRest();
 		String str = "";
 		for(Name station : dtoList) {
-			str += station.getName();
+			str = str + lineSepa + station.getName();
 		}
 		return new TextMessage(str);
 	}
